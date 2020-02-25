@@ -53,6 +53,8 @@ def gen_bigram_course():
     if output in tokenized_courses:
         #if the course exactly matches an existing course, generate a new one
         output = gen_bigram_course()
+    if len(output) == 1:
+        output = gen_bigram_course()
     return output
         
 def put_course_name_together(output):
