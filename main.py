@@ -49,7 +49,7 @@ def gen_bigram_course():
     output = output[1:-1] #remove stop
     if output in tokenized_courses:
         #print("dupe:", output)
-        output = gen_course(bigram_probabilities, tokenized_courses)
+        output = gen_course()
     return output
         
 def put_course_name_together(output):
