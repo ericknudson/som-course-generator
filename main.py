@@ -5,6 +5,7 @@ import csv
 
 app = Flask(__name__)
 
+#import data
 nums = []
 with open('static/nums.csv') as csv_file:
     csv_reader = csv.reader(x.replace('\0', '') for x in csv_file)
@@ -26,13 +27,14 @@ with open('static/tokenizedcourses.csv') as csv_file:
     for row in csv_reader:
         tokenized_courses.append(row)
 
+#function to generate a new course name
 def gen_bigram_course():
     output = ["*"]
     next_token = ""
     i = 1
     while next_token != 'STOP':
-        current_history = output[i-1]
-        possible_bigrams = [(key, value) for key, value in bigram_probabilities.items() if key[0] == current_history]
+        current_history = output[i-1] #this is the previous word
+        possible_bigrams = [(key, value) for key, value in bigram_probabilities.items() if key[0] == current_history] #bigrams that start with that word
         bigrams = [x[0] for x in possible_bigrams]
         bigrams = [x[1] for x in bigrams]
         probs = [x[1] for x in possible_bigrams]
@@ -40,16 +42,16 @@ def gen_bigram_course():
         sprobs = np.sum(probs)
         probs = np.divide(probs,sprobs)
         if i == 1:
+            #if it's the first word, pick it at random
             next_token = np.random.choice(np.array(bigrams), 1)[0]
         else:
-            #next_token = choice(np.array(bigrams), 1)[0]
+            #otherwise, pick from the probability distribution of bigrams
             next_token = np.random.choice(np.array(bigrams), 1, p = np.array(probs))[0]
-        #look back 2, choose bigram based on distribution of bigrams with those first two words in common
         output.append(next_token)
         i = i + 1
-    output = output[1:-1] #remove stop
+    output = output[1:-1] #remove start and stop symbols
     if output in tokenized_courses:
-        #print("dupe:", output)
+        #if the course exactly matches an existing course, generate a new one
         output = gen_bigram_course()
     return output
         
