@@ -21,7 +21,7 @@ with open('static/bigram_probabilities.csv') as csv_file:
         bigram_probabilities.update({key: value})
 
 tokenizedcourses = []
-with open('tokenizedcourses.csv') as csv_file:
+with open('static/tokenizedcourses.csv') as csv_file:
     csv_reader = csv.reader(x.replace('\0', '') for x in csv_file)
     for row in csv_reader:
         tokenizedcourses.append(row)
