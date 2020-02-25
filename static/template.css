@@ -37,3 +37,9 @@ button:focus {
   justify-content: center;
   align-items: center;
 }
+
+@media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 130px;
+  }
+}
