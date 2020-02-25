@@ -20,11 +20,11 @@ with open('static/bigram_probabilities.csv') as csv_file:
         value = row[2]
         bigram_probabilities.update({key: value})
 
-tokenizedcourses = []
+tokenized_courses = []
 with open('static/tokenizedcourses.csv') as csv_file:
     csv_reader = csv.reader(x.replace('\0', '') for x in csv_file)
     for row in csv_reader:
-        tokenizedcourses.append(row)
+        tokenized_courses.append(row)
 
 def gen_bigram_course():
     output = ["*"]
