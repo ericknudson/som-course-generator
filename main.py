@@ -20,7 +20,13 @@ with open('static/bigram_probabilities.csv') as csv_file:
         value = row[2]
         bigram_probabilities.update({key: value})
 
-def gen_name():
+tokenizedcourses = []
+with open('tokenizedcourses.csv') as csv_file:
+    csv_reader = csv.reader(x.replace('\0', '') for x in csv_file)
+    for row in csv_reader:
+        tokenizedcourses.append(row)
+
+def gen_bigram_course():
     output = ["*"]
     next_token = ""
     i = 1
@@ -30,19 +36,28 @@ def gen_name():
         bigrams = [x[0] for x in possible_bigrams]
         bigrams = [x[1] for x in bigrams]
         probs = [x[1] for x in possible_bigrams]
-        probs = np.array(probs)
-        probs = probs.astype(np.float)
         sprobs = np.sum(probs)
         probs = np.divide(probs,sprobs)
         if i == 1:
-            next_token = np.random.choice(np.array(bigrams), 1)[0]
+            next_token = choice(np.array(bigrams), 1)[0]
         else:
-            next_token = np.random.choice(np.array(bigrams), 1, p = np.array(probs))[0]
+            #next_token = choice(np.array(bigrams), 1)[0]
+            next_token = choice(np.array(bigrams), 1, p = np.array(probs))[0]
+        #look back 2, choose bigram based on distribution of bigrams with those first two words in common
         output.append(next_token)
         i = i + 1
     output = output[1:-1] #remove stop
+    if output in tokenized_courses:
+        #print("dupe:", output)
+        output = gen_course(bigram_probabilities, tokenized_courses)
+    return output
+        
+def put_course_name_together(output):
     new_name = " ".join(output)
-    num = np.random.choice(nums,1)[0]
+    new_name = new_name.replace(" ,",",")
+    new_name = new_name.replace(" :",":")
+    new_name = new_name.replace(" ?","?")
+    num = choice(nums,1)[0]
     new_name = "MGT " + num + " " + new_name 
     return new_name
 
@@ -53,7 +68,8 @@ def index():
 @app.route("/forward/", methods=['POST'])
 def move_forward():
     #Moving forward code
-    forward_message = gen_name()
+    output = gen_bigram_course()
+    course = put_course_name_together(output)
     return render_template('index.html', forward_message=forward_message);
 
 if __name__ == "__main__":
