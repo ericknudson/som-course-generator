@@ -36,13 +36,14 @@ def gen_bigram_course():
         bigrams = [x[0] for x in possible_bigrams]
         bigrams = [x[1] for x in bigrams]
         probs = [x[1] for x in possible_bigrams]
+        probs = [float(i) for i in probs]
         sprobs = np.sum(probs)
         probs = np.divide(probs,sprobs)
         if i == 1:
-            next_token = choice(np.array(bigrams), 1)[0]
+            next_token = np.random.choice(np.array(bigrams), 1)[0]
         else:
             #next_token = choice(np.array(bigrams), 1)[0]
-            next_token = choice(np.array(bigrams), 1, p = np.array(probs))[0]
+            next_token = np.random.choice(np.array(bigrams), 1, p = np.array(probs))[0]
         #look back 2, choose bigram based on distribution of bigrams with those first two words in common
         output.append(next_token)
         i = i + 1
@@ -57,7 +58,7 @@ def put_course_name_together(output):
     new_name = new_name.replace(" ,",",")
     new_name = new_name.replace(" :",":")
     new_name = new_name.replace(" ?","?")
-    num = choice(nums,1)[0]
+    num = np.random.choice(nums,1)[0]
     new_name = "MGT " + num + " " + new_name 
     return new_name
 
@@ -70,7 +71,7 @@ def move_forward():
     #Moving forward code
     output = gen_bigram_course()
     course = put_course_name_together(output)
-    return render_template('index.html', forward_message=forward_message);
+    return render_template('index.html', forward_message=course);
 
 if __name__ == "__main__":
     app.run(debug=True)
