@@ -2,7 +2,7 @@
 
 A Flask Python app that uses a bigram Markov model to generate new course names based off of the real <a href="https://som.yale.edu/elective-core-courses">Yale SOM course catalog</a>. Hosted on Heroku at https://keep-som-weird.herokuapp.com/.
 
-![](final.png)
+![](screenshot.png)
 
 ## how it works
 
