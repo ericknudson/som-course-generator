@@ -59,11 +59,11 @@ def gen_bigram_course():
         
 def put_course_name_together(output):
     new_name = " ".join(output)
-    new_name = new_name.replace(" ,",",")
-    new_name = new_name.replace(" :",":")
-    new_name = new_name.replace(" ?","?")
-    num = np.random.choice(nums,1)[0]
-    new_name = "MGT " + num + " " + new_name 
+#    new_name = new_name.replace(" ,",",")
+#    new_name = new_name.replace(" :",":")
+#    new_name = new_name.replace(" ?","?")
+#    num = np.random.choice(nums,1)[0]
+#    new_name = "MGT " + num + " " + new_name 
     return new_name
 
 @app.route("/")
